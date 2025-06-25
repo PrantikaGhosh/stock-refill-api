@@ -1,19 +1,23 @@
-// server.js
 const express = require('express');
 const bodyParser = require('body-parser');
-const db = require('./db');             // MySQL connection
-const stockRoutes = require('./routes/stock'); // Import stock routes
+const db = require('./db');
+const stockRoutes = require('./routes/stock');
+const checkoutRoutes = require('./routes/checkout');
+const authRoutes = require('./routes/auth'); // optional, keep if you have login
+// No auth middleware here for checkout now
 
 const app = express();
 const PORT = 3000;
 
-// Middleware
 app.use(bodyParser.json());
 
-// Register stock route
-app.use('/api', stockRoutes);
+// Auth route (optional)
+app.use('/api', authRoutes);
 
-// Start server
+// No authentication for checkout for now
+app.use('/api', stockRoutes);
+app.use('/api', checkoutRoutes);
+
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
